@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Pak Pink Jai 🌿</title>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Kanit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --g0:#f2fbf6; --g1:#e0f5eb; --g2:#b8e8d0; --g3:#1eca8a; --g4:#0f9a63; --g5:#0a6642;
+  --text:#0d2e1f; --t2:#2d6648; --t3:#5a9070; --t4:#9dbfad;
+  --white:#fff; --bg:#f7fdf9;
+  --amber:#f59e0b; --amber-bg:#fffbeb; --amber-b:#fcd34d;
+  --red:#dc2626; --red-bg:#fef2f2; --red-b:#fca5a5;
+  --shadow:0 2px 12px rgba(10,102,66,.10),0 1px 4px rgba(10,102,66,.06);
+  --shadow-lg:0 8px 32px rgba(10,102,66,.14),0 2px 8px rgba(10,102,66,.08);
+  --r:16px; --r-sm:11px; --r-xs:8px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:#e8f4ec;font-family:'Sarabun',sans-serif;color:var(--text)}
+
+/* PHONE SHELL */
+.phone{
+  width:390px;height:844px;background:var(--bg);border-radius:50px;overflow:hidden;
+  position:relative;margin:20px auto;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18),0 40px 120px rgba(0,0,0,.25),inset 0 0 0 1px rgba(255,255,255,.08);
+}
+@media(max-height:900px){.phone{transform:scale(.92);transform-origin:top center;margin-top:0}}
+
+/* DYNAMIC ISLAND */
+.island{
+  position:absolute;top:11px;left:50%;transform:translateX(-50%);
+  width:120px;height:35px;background:#000;border-radius:20px;z-index:200;
+}
+
+/* STATUS BAR */
+.statusbar{
+  position:absolute;top:0;left:0;right:0;height:54px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:0 26px 8px;z-index:100;
+}
+.st-time{font-family:'Kanit',sans-serif;font-size:15px;font-weight:600;color:var(--text)}
+.st-icons{display:flex;gap:5px;align-items:center;opacity:.8}
+
+/* PAGES */
+.screen{position:absolute;top:0;left:0;right:0;bottom:0;overflow:hidden}
+.page{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;overflow-x:hidden;display:none;scrollbar-width:none;background:var(--bg)}
+.page::-webkit-scrollbar{display:none}
+.page.active{display:block}
+.page-inner{padding:56px 0 96px}
+
+/* BOTTOM NAV */
+.bnav{
+  position:absolute;bottom:0;left:0;right:0;height:90px;
+  background:rgba(247,253,249,.96);border-top:1px solid var(--g2);
+  backdrop-filter:blur(20px);z-index:50;
+  display:flex;align-items:flex-start;padding-top:8px;
+}
+.nb{
+  flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:6px 2px;cursor:pointer;background:none;border:none;transition:.18s;
+}
+.nb:active{transform:scale(.9)}
+.nb-icon{font-size:21px;transition:.2s}
+.nb-label{font-size:9px;font-weight:700;letter-spacing:.04em;color:var(--t4);text-transform:uppercase}
+.nb.act .nb-label{color:var(--g3)}
+.nb.act .nb-icon{transform:scale(1.08)}
+.nb-dot{width:4px;height:4px;border-radius:50%;background:var(--g3);margin-top:2px;opacity:0}
+.nb.act .nb-dot{opacity:1}
+
+/* ─── HOME ─── */
+.home-top{padding:28px 22px 0}
+.home-date{font-size:12px;color:var(--t4);letter-spacing:.06em;text-transform:uppercase}
+.home-greeting{font-family:'Kanit',sans-serif;font-size:26px;font-weight:800;color:var(--text);margin-top:3px;line-height:1.1}
+.home-greeting em{color:var(--g3);font-style:normal}
+
+.mood-ring-card{
+  margin:18px 22px 0;background:var(--white);border-radius:var(--r);
+  border:1.5px solid var(--g2);padding:20px;display:flex;gap:18px;
+  align-items:center;box-shadow:var(--shadow);position:relative;overflow:hidden;
+}
+.mood-ring-card::after{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:120px;height:120px;border-radius:50%;
+  background:radial-gradient(circle,rgba(30,202,138,.12),transparent 70%);
+}
+.ring-wrap{position:relative;flex-shrink:0}
+.ring-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.ring-score{font-family:'Kanit',sans-serif;font-size:22px;font-weight:800;color:var(--g3);line-height:1}
+.ring-lbl{font-size:9px;color:var(--t4);letter-spacing:.05em;text-transform:uppercase;margin-top:1px}
+.ring-info h3{font-family:'Kanit',sans-serif;font-size:15px;font-weight:700;color:var(--text)}
+.ring-info p{font-size:12px;color:var(--t3);margin-top:3px;line-height:1.5}
+.streak-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--g1);border:1px solid var(--g2);
+  border-radius:20px;padding:3px 10px;margin-top:7px;
+  font-size:11px;font-weight:600;color:var(--g4);
+}
+
+.quick-row{display:flex;gap:10px;margin:14px 22px 0}
+.qb{
+  flex:1;border:none;border-radius:var(--r-sm);padding:14px 10px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
+  transition:.18s;position:relative;overflow:hidden;
+}
+.qb:active{transform:scale(.95)}
+.qb.gr{background:rgba(30,202,138,.10);border:1.5px solid rgba(30,202,138,.22)}
+.qb.pk{background:rgba(245,158,11,.09);border:1.5px solid rgba(245,158,11,.22)}
+.qb.bl{background:rgba(37,99,235,.08);border:1.5px solid rgba(37,99,235,.20)}
+.qb.pu{background:rgba(124,58,237,.08);border:1.5px solid rgba(124,58,237,.20)}
+.qb-icon{font-size:20px}
+.qb-label{font-size:10px;font-weight:700;letter-spacing:.02em}
+.qb.gr .qb-label{color:var(--g4)}
+.qb.pk .qb-label{color:#b45309}
+.qb.bl .qb-label{color:#1d4ed8}
+.qb.pu .qb-label{color:#6d28d9}
+
+.section-hd{
+  font-family:'Kanit',sans-serif;font-size:16px;font-weight:700;color:var(--text);
+  margin:20px 22px 10px;display:flex;align-items:center;justify-content:space-between;
+}
+.section-hd a{font-size:12px;color:var(--g3);font-weight:500;cursor:pointer}
+
+.insight-card{
+  margin:0 22px;background:var(--white);border:1.5px solid var(--g2);
+  border-radius:var(--r);padding:16px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.insight-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2.5px;background:linear-gradient(90deg,var(--g3),rgba(30,202,138,.3))}
+.insight-tag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g3);margin-bottom:7px}
+.insight-text{font-size:13.5px;color:var(--text);line-height:1.7}
+
+.jlist{margin:0 22px;background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.jitem{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border-bottom:1px solid var(--g1);cursor:pointer;transition:.15s}
+.jitem:last-child{border-bottom:none}
+.jitem:active{background:var(--g0)}
+.ji-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;margin-top:2px}
+.ji-info{flex:1;min-width:0}
+.ji-top{display:flex;align-items:center;justify-content:space-between}
+.ji-title{font-size:13.5px;font-weight:700;color:var(--text)}
+.ji-time{font-size:11px;color:var(--t4)}
+.ji-prev{font-size:12.5px;color:var(--t3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ─── JOURNAL ─── */
+.ph{padding:26px 22px 0}
+.ph-title{font-family:'Kanit',sans-serif;font-size:27px;font-weight:800;color:var(--text);letter-spacing:-.3px}
+.ph-sub{font-size:13px;color:var(--t3);margin-top:3px}
+
+.mood-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:0 22px}
+.mc{
+  background:var(--white);border:1.5px solid var(--g1);border-radius:var(--r-sm);
+  padding:11px 6px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;transition:.18s;
+}
+.mc:active,.mc.sel{border-color:var(--g3);background:rgba(30,202,138,.07);transform:scale(1.04)}
+.mc-emoji{font-size:22px}
+.mc-label{font-size:10px;font-weight:700;color:var(--t3);letter-spacing:.02em}
+.mc.sel .mc-label{color:var(--g4)}
+
+.int-row{display:flex;align-items:center;gap:12px;margin:12px 22px 0}
+.int-lbl{font-size:12px;color:var(--t3);flex-shrink:0}
+input[type=range]{flex:1;-webkit-appearance:none;height:4px;border-radius:2px;background:var(--g2);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:var(--g3);box-shadow:0 0 8px rgba(30,202,138,.4);cursor:pointer}
+.int-val{font-size:13px;font-weight:700;color:var(--g3);min-width:20px}
+
+.tags-row{display:flex;flex-wrap:wrap;gap:7px;margin:12px 22px 0}
+.tag{
+  padding:6px 13px;border-radius:20px;border:1.5px solid var(--g1);
+  background:var(--white);font-size:12px;color:var(--t3);cursor:pointer;
+  transition:.18s;font-weight:600;
+}
+.tag:active,.tag.sel{border-color:var(--g3);background:rgba(30,202,138,.08);color:var(--g4)}
+
+.journal-wrap{margin:12px 22px 0;position:relative}
+textarea{
+  width:100%;min-height:130px;background:var(--white);border:1.5px solid var(--g1);
+  border-radius:var(--r);padding:14px;color:var(--text);
+  font-family:'Sarabun',sans-serif;font-size:14.5px;line-height:1.7;
+  resize:none;outline:none;transition:.2s;caret-color:var(--g3);
+}
+textarea::placeholder{color:var(--t4)}
+textarea:focus{border-color:rgba(30,202,138,.5)}
+.char-ct{position:absolute;bottom:12px;right:12px;font-size:10.5px;color:var(--t4)}
+
+.sub-btn{
+  width:calc(100% - 44px);margin:14px 22px 0;padding:16px;border:none;
+  border-radius:var(--r-sm);background:var(--g3);color:#fff;
+  font-family:'Kanit',sans-serif;font-size:16px;font-weight:700;
+  cursor:pointer;transition:.18s;box-shadow:0 4px 18px rgba(30,202,138,.32);
+  letter-spacing:.02em;
+}
+.sub-btn:active{transform:scale(.98);opacity:.9}
+.sub-btn:disabled{background:var(--g2);color:var(--t4);box-shadow:none}
+
+/* ─── AI CHAT ─── */
+.chat-hdr{padding:26px 22px 14px}
+.chat-hdr h2{font-family:'Kanit',sans-serif;font-size:24px;font-weight:800;color:var(--text)}
+.ai-status{display:flex;align-items:center;gap:7px;margin-top:4px}
+.ai-dot{width:7px;height:7px;border-radius:50%;background:var(--g3);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.8)}}
+.ai-st-txt{font-size:12.5px;color:var(--t3)}
+
+.msgs{padding:0 16px;display:flex;flex-direction:column;gap:10px}
+.msg{display:flex;align-items:flex-end;gap:8px;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.msg.user{flex-direction:row-reverse}
+.bubble{max-width:78%;padding:11px 15px;border-radius:18px;font-size:13.5px;line-height:1.65;word-break:break-word}
+.msg .bubble{background:var(--white);border:1px solid var(--g1);color:var(--text);border-bottom-left-radius:5px}
+.msg.user .bubble{background:var(--g3);color:#000;font-weight:500;border-bottom-right-radius:5px}
+.msg-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;background:var(--g1)}
+.typing-b{background:var(--white);border:1px solid var(--g1);border-radius:18px;border-bottom-left-radius:5px;padding:13px 16px;display:flex;gap:5px;align-items:center}
+.td{width:6px;height:6px;border-radius:50%;background:var(--t4);animation:td 1.2s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+.chat-input-area{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,var(--bg) 28%);padding:12px 14px 88px}
+.qps{display:flex;gap:8px;margin-bottom:10px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}
+.qps::-webkit-scrollbar{display:none}
+.qp{white-space:nowrap;padding:7px 13px;border-radius:20px;border:1px solid var(--g2);background:var(--white);font-size:11.5px;color:var(--t3);cursor:pointer;transition:.15s;flex-shrink:0;font-weight:600}
+.qp:active{border-color:var(--g3);background:var(--g1);color:var(--g4)}
+.chat-input-row{display:flex;gap:9px;align-items:flex-end;background:var(--white);border:1.5px solid var(--g2);border-radius:24px;padding:9px 9px 9px 15px}
+.chat-inp{flex:1;background:transparent;border:none;outline:none;color:var(--text);font-family:'Sarabun',sans-serif;font-size:14.5px;line-height:1.5;resize:none;max-height:90px;overflow-y:auto;scrollbar-width:none;caret-color:var(--g3)}
+.chat-inp::placeholder{color:var(--t4)}
+.chat-send{width:38px;height:38px;border-radius:50%;border:none;background:var(--g3);color:#fff;font-size:15px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.18s;flex-shrink:0}
+.chat-send:disabled{background:var(--g1);color:var(--t4)}
+.chat-send:not(:disabled):active{transform:scale(.92)}
+
+/* ─── REPORT ─── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:0 22px}
+.sc{background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r-sm);padding:15px;box-shadow:var(--shadow)}
+.sc-val{font-family:'Kanit',sans-serif;font-size:28px;font-weight:800;color:var(--g3)}
+.sc-lbl{font-size:11.5px;color:var(--t3);margin-top:1px}
+.sc-trend{font-size:10.5px;color:var(--g4);margin-top:5px;font-weight:600}
+
+.mbar-item{margin:0 22px 13px}
+.mbar-top{display:flex;justify-content:space-between;margin-bottom:5px}
+.mbar-top span{font-size:12.5px;color:var(--t3)}
+.mbar-top strong{font-size:12.5px;color:var(--text);font-weight:700}
+.mbar-track{height:7px;background:var(--g1);border-radius:4px;overflow:hidden}
+.mbar-fill{height:100%;border-radius:4px;background:var(--g3);transition:width 1.2s ease}
+
+.hm-wrap{display:flex;flex-wrap:wrap;gap:4px;margin:0 22px}
+.hmc{width:19px;height:19px;border-radius:4px;background:var(--g1)}
+.hmc.l1{background:rgba(30,202,138,.25)}.hmc.l2{background:rgba(30,202,138,.55)}.hmc.l3{background:var(--g3)}
+
+.pi-card{margin:0 22px;background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r);padding:16px;box-shadow:var(--shadow)}
+.pi-tag{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--g3);margin-bottom:7px}
+.pi-text{font-size:13px;color:var(--text);line-height:1.7}
+
+/* ─── DECISION PAUSE ─── */
+.dp-card{
+  margin:0 22px;background:var(--amber-bg);border:2px solid var(--amber-b);
+  border-radius:var(--r);padding:18px;box-shadow:var(--shadow);
+}
+.dp-icon{font-size:32px;margin-bottom:10px}
+.dp-title{font-family:'Kanit',sans-serif;font-size:17px;font-weight:800;color:#92400e;margin-bottom:4px}
+.dp-sub{font-size:13px;color:#b45309;line-height:1.5;margin-bottom:16px}
+
+.dp-q{
+  background:var(--white);border:1.5px solid var(--amber-b);border-radius:var(--r-sm);
+  padding:13px 14px;margin-bottom:10px;
+}
+.dp-q-num{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:4px}
+.dp-q-text{font-size:13px;color:#78350f;line-height:1.55;font-weight:600}
+
+.safer-card{margin:0 22px;background:var(--white);border:1.5px solid var(--g2);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow)}
+.safer-hd{background:var(--g3);padding:12px 16px}
+.safer-hd-txt{font-family:'Kanit',sans-serif;font-size:14px;font-weight:700;color:#fff}
+.safer-body{padding:14px}
+.safer-item{display:flex;align-items:flex-start;gap:9px;padding:9px 0;border-bottom:1px solid var(--g1);font-size:13px;color:var(--t2);line-height:1.45}
+.safer-item:last-child{border-bottom:none}
+.safer-check{color:var(--g3);font-size:14px;flex-shrink:0;margin-top:1px}
+
+.gr-alert{
+  margin:14px 22px 0;background:var(--red-bg);border:1.5px solid var(--red-b);
+  border-radius:var(--r-sm);padding:13px 15px;display:none;
+}
+.gr-alert.show{display:block}
+.gr-alert-title{font-family:'Kanit',sans-serif;font-size:14px;font-weight:700;color:var(--red);margin-bottom:5px}
+.gr-alert-text{font-size:12.5px;color:#7f1d1d;line-height:1.6}
+.gr-phone{display:flex;align-items:center;gap:10px;margin-top:10px;background:var(--red);border-radius:var(--r-xs);padding:10px 14px;cursor:pointer}
+.gr-phone-num{font-family:'Kanit',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.gr-phone-lbl{font-size:11px;color:rgba(255,255,255,.85)}
+
+/* ─── TOAST ─── */
+.toast{
+  position:absolute;top:65px;left:22px;right:22px;
+  background:rgba(30,202,138,.15);border:1px solid rgba(30,202,138,.35);
+  border-radius:var(--r-xs);padding:11px 15px;font-size:13px;color:var(--g4);
+  text-align:center;animation:toastA 3s ease forwards;z-index:300;
+  backdrop-filter:blur(10px);font-weight:600;
+}
+@keyframes toastA{0%{opacity:0;transform:translateY(-8px)}15%{opacity:1;transform:translateY(0)}75%{opacity:1}100%{opacity:0;transform:translateY(-8px)}}
+
+/* SEC SPACING */
+.sp{height:16px}
+.sp-sm{height:10px}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="island"></div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <div class="st-time" id="clk">9:41</div>
+    <div class="st-icons">
+      <svg width="17" height="12" viewBox="0 0 17 12" fill="var(--text)" opacity=".7"><rect x="0" y="4" width="3" height="8" rx="1" opacity=".35"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1" opacity=".55"/><rect x="9" y="1" width="3" height="11" rx="1" opacity=".8"/><rect x="13.5" y="0" width="3" height="12" rx="1"/></svg>
+      <svg width="16" height="12" viewBox="0 0 16 12" fill="var(--text)" opacity=".7"><path d="M8 2.5c2.6 0 4.9 1.1 6.6 2.8L16 4C14 1.5 11.2 0 8 0S2 1.5 0 4l1.4 1.3C3.1 3.6 5.4 2.5 8 2.5z" opacity=".3"/><path d="M8 5.5c1.7 0 3.2.7 4.3 1.8L13.6 6C12.2 4.5 10.2 3.5 8 3.5S3.8 4.5 2.4 6l1.3 1.3C4.8 6.2 6.3 5.5 8 5.5z" opacity=".6"/><circle cx="8" cy="10" r="2"/></svg>
+      <svg width="26" height="12" viewBox="0 0 26 12" fill="none" opacity=".7"><rect x=".5" y=".5" width="21" height="11" rx="3" stroke="var(--text)" stroke-width="1" fill="none" opacity=".4"/><rect x="2" y="2" width="16" height="8" rx="1.5" fill="var(--text)"/><path d="M23.5 4.5v3c.8-.3 1.3-1 1.3-1.5s-.5-1.2-1.3-1.5z" fill="var(--text)" opacity=".5"/></svg>
+    </div>
+  </div>
+
+  <div class="screen">
+
+    <!-- ═══ HOME ═══ -->
+    <div class="page active" id="pg-home">
+      <div class="page-inner">
+        <div class="home-top">
+          <div class="home-date" id="hdate"></div>
+          <div class="home-greeting">สวัสดี, <em>คุณมิ้นท์</em> 🌿</div>
+        </div>
+
+        <!-- Mood ring -->
+        <div class="mood-ring-card">
+          <div class="ring-wrap">
+            <svg width="88" height="88" viewBox="0 0 88 88">
+              <circle cx="44" cy="44" r="34" fill="none" stroke="rgba(30,202,138,.12)" stroke-width="8"/>
+              <circle cx="44" cy="44" r="34" fill="none" stroke="#1eca8a" stroke-width="8"
+                stroke-dasharray="214" stroke-dashoffset="53" stroke-linecap="round" transform="rotate(-90 44 44)" id="ringCircle"/>
+            </svg>
+            <div class="ring-center">
+              <div class="ring-score" id="scoreNum">75</div>
+              <div class="ring-lbl">ใจดี</div>
+            </div>
+          </div>
+          <div class="ring-info">
+            <h3>สุขภาพใจสัปดาห์นี้</h3>
+            <p>ดีขึ้น 12% จากสัปดาห์ที่แล้ว<br>Safe actions สำเร็จ 4/5</p>
+            <div class="streak-badge">🔥 <span id="streakN">5</span> วันติดต่อกัน</div>
+          </div>
+        </div>
+
+        <!-- Quick actions -->
+        <div class="quick-row">
+          <button class="qb gr" onclick="go('journal')"><span class="qb-icon">✍️</span><span class="qb-label">บันทึกใจ</span></button>
+          <button class="qb pk" onclick="go('pause')"><span class="qb-icon">⏸️</span><span class="qb-label">Decision</span></button>
+          <button class="qb bl" onclick="go('chat')"><span class="qb-icon">💬</span><span class="qb-label">AI โค้ช</span></button>
+          <button class="qb pu" onclick="go('report')"><span class="qb-icon">📊</span><span class="qb-label">รายงาน</span></button>
+        </div>
+
+        <!-- Today Insight -->
+        <div class="section-hd">✨ Insight วันนี้</div>
+        <div class="insight-card">
+          <div class="insight-tag">🌙 AI วิเคราะห์สไตล์มูเตลู</div>
+          <div class="insight-text" id="homeInsight">วันนี้เหมาะกับการ "จัดระเบียบ" มากกว่า "ตัดสินใจใหญ่" — โฟกัส 1 เรื่องที่ควบคุมได้จริง แล้วเริ่มจากก้าวเล็กๆ 🌱</div>
+        </div>
+
+        <!-- Recent -->
+        <div class="section-hd"><span>บันทึกล่าสุด</span><a onclick="go('journal')">ดูทั้งหมด →</a></div>
+        <div class="jlist" id="jlist">
+          <div class="jitem">
+            <div class="ji-dot" style="background:rgba(245,158,11,.12)">😤</div>
+            <div class="ji-info">
+              <div class="ji-top"><div class="ji-title">เครียด · งาน</div><div class="ji-time">2 ชม.</div></div>
+              <div class="ji-prev">หัวหน้าให้งานเพิ่มอีก ไม่รู้จะรับไหวไหม...</div>
+            </div>
+          </div>
+          <div class="jitem">
+            <div class="ji-dot" style="background:rgba(37,99,235,.10)">😔</div>
+            <div class="ji-info">
+              <div class="ji-top"><div class="ji-title">เหนื่อย · ครอบครัว</div><div class="ji-time">เมื่อวาน</div></div>
+              <div class="ji-prev">ยังไม่รู้ว่าอยากทำอะไรกับชีวิต รู้สึกลอยๆ</div>
+            </div>
+          </div>
+          <div class="jitem">
+            <div class="ji-dot" style="background:rgba(30,202,138,.10)">😌</div>
+            <div class="ji-info">
+              <div class="ji-top"><div class="ji-title">กังวล · เงิน</div><div class="ji-time">2 พ.ค.</div></div>
+              <div class="ji-prev">กังวลเรื่องค่าใช้จ่ายปลายเดือน แต่ยังจัดการได้</div>
+            </div>
+          </div>
+        </div>
+        <div class="sp"></div>
+      </div>
+    </div>
+
+    <!-- ═══ JOURNAL ═══ -->
+    <div class="page" id="pg-journal">
+      <div class="page-inner">
+        <div class="ph">
+          <div class="ph-title">บันทึกใจ</div>
+          <div class="ph-sub">เขียนระบาย · เราเก็บข้อมูลให้ 💚</div>
+        </div>
+        <div class="sp"></div>
+
+        <div class="section-hd" style="margin-top:0">ตอนนี้รู้สึกยังไง?</div>
+        <div class="mood-grid" id="moodGrid">
+          <div class="mc" onclick="selM(this,'เครียด','😤','#fef2f2')"><span class="mc-emoji">😤</span><span class="mc-label">เครียด</span></div>
+          <div class="mc" onclick="selM(this,'กังวล','😰','#eff6ff')"><span class="mc-emoji">😰</span><span class="mc-label">กังวล</span></div>
+          <div class="mc" onclick="selM(this,'โกรธ','😠','#fef2f2')"><span class="mc-emoji">😠</span><span class="mc-label">โกรธ</span></div>
+          <div class="mc" onclick="selM(this,'เหนื่อย','😔','#f5f3ff')"><span class="mc-emoji">😔</span><span class="mc-label">เหนื่อย</span></div>
+          <div class="mc" onclick="selM(this,'สับสน','😵','#fdf4ff')"><span class="mc-emoji">😵</span><span class="mc-label">สับสน</span></div>
+          <div class="mc" onclick="selM(this,'หมดไฟ','🪫','#f8fafc')"><span class="mc-emoji">🪫</span><span class="mc-label">หมดไฟ</span></div>
+          <div class="mc" onclick="selM(this,'โอเค','😌','#f0fdf4')"><span class="mc-emoji">😌</span><span class="mc-label">โอเค</span></div>
+          <div class="mc" onclick="selM(this,'ดีใจ','🥰','#fefce8')"><span class="mc-emoji">🥰</span><span class="mc-label">ดีใจ</span></div>
+        </div>
+
+        <div class="int-row">
+          <span class="int-lbl">ระดับ</span>
+          <input type="range" min="1" max="10" value="5" id="intSlider" oninput="document.getElementById('intV').textContent=this.value">
+          <span class="int-val" id="intV">5</span>
+        </div>
+
+        <div class="section-hd" style="margin-top:14px;margin-bottom:8px">เกี่ยวกับเรื่อง?</div>
+        <div class="tags-row" id="tagRow">
+          <div class="tag" onclick="togTag(this)">💼 งาน</div>
+          <div class="tag" onclick="togTag(this)">💰 เงิน</div>
+          <div class="tag" onclick="togTag(this)">❤️ ความรัก</div>
+          <div class="tag" onclick="togTag(this)">👨‍👩‍👧 ครอบครัว</div>
+          <div class="tag" onclick="togTag(this)">🌱 อนาคต</div>
+          <div class="tag" onclick="togTag(this)">🏥 สุขภาพ</div>
+          <div class="tag" onclick="togTag(this)">🤝 เพื่อน</div>
+        </div>
+
+        <div class="section-hd" style="margin-top:14px;margin-bottom:8px">เขียนระบาย</div>
+        <div class="journal-wrap">
+          <textarea id="jtxt" maxlength="500" rows="5"
+            placeholder="เขียนได้เลย ไม่ต้องกังวล ที่นี่ปลอดภัย 🌿&#10;&#10;วันนี้รู้สึกยังไง? เกิดอะไรขึ้น?..."
+            oninput="document.getElementById('cc').textContent=this.value.length"></textarea>
+          <div class="char-ct"><span id="cc">0</span>/500</div>
+        </div>
+
+        <button class="sub-btn" onclick="submitJ()" id="subBtn">บันทึก + รับ AI Reflection ✨</button>
+        <div class="sp"></div>
+      </div>
+    </div>
+
+    <!-- ═══ CHAT ═══ -->
+    <div class="page" id="pg-chat">
+      <div class="page-inner" style="padding-bottom:170px">
+        <div class="chat-hdr">
+          <div style="font-size:11px;color:var(--t4);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px">AI โค้ช ปุ้ม 🌿</div>
+          <h2>Pak Pink Jai</h2>
+          <div class="ai-status"><div class="ai-dot"></div><span class="ai-st-txt">ออนไลน์ · พร้อมรับฟัง ตลอดเวลา</span></div>
+        </div>
+        <div class="msgs" id="msgs">
+          <div class="msg">
+            <div class="msg-av">🌿</div>
+            <div class="bubble">สวัสดีนะ 👋 ฉันชื่อปุ้ม เป็น AI โค้ชของ Pak Pink Jai<br><br>วันนี้รู้สึกยังไงบ้าง? เล่าได้เลย ไม่ต้องกลัว ที่นี่ปลอดภัยมากๆ 💚</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-area">
+        <div class="qps">
+          <div class="qp" onclick="qsend('วันนี้เครียดมากเลย')">😤 เครียดมาก</div>
+          <div class="qp" onclick="qsend('รู้สึกหมดไฟ ทำอะไรไม่ออก')">🪫 หมดไฟ</div>
+          <div class="qp" onclick="qsend('กำลังคิดจะลาออกจากงาน')">💼 คิดลาออก</div>
+          <div class="qp" onclick="qsend('กังวลเรื่องเงินมากเลย')">💰 กังวลเงิน</div>
+          <div class="qp" onclick="qsend('ทะเลาะกับแฟน ไม่รู้ทำยังไง')">❤️ ปัญหาความรัก</div>
+          <div class="qp" onclick="qsend('อยากได้กำลังใจหน่อย')">💪 ขอกำลังใจ</div>
+        </div>
+        <div class="chat-input-row">
+          <textarea class="chat-inp" id="ci" rows="1" placeholder="พิมพ์ระบายได้เลย..."
+            oninput="autoR(this);document.getElementById('csend').disabled=!this.value.trim()"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();doSend()}"></textarea>
+          <button class="chat-send" id="csend" onclick="doSend()" disabled>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ REPORT ═══ -->
+    <div class="page" id="pg-report">
+      <div class="page-inner">
+        <div class="ph">
+          <div class="ph-title">รายงานสุขภาพใจ</div>
+          <div class="ph-sub" id="repDate">27 เม.ย.–3 พ.ค. 2569</div>
+        </div>
+        <div class="sp"></div>
+
+        <div class="stats-grid">
+          <div class="sc"><div class="sc-val" id="rScore">75</div><div class="sc-lbl">คะแนนสุขภาพใจ</div><div class="sc-trend">↑ ดีขึ้น 12%</div></div>
+          <div class="sc"><div class="sc-val" id="rStreak">5</div><div class="sc-lbl">วัน check-in</div><div class="sc-trend">🔥 streak 5 วัน</div></div>
+          <div class="sc"><div class="sc-val">4</div><div class="sc-lbl">Safe actions ✅</div><div class="sc-trend">จาก 5 ทั้งหมด</div></div>
+          <div class="sc"><div class="sc-val" id="rEntries">2</div><div class="sc-lbl">บันทึก</div><div class="sc-trend">สัปดาห์นี้</div></div>
+        </div>
+        <div class="sp-sm"></div>
+
+        <div class="section-hd">😊 อารมณ์ที่พบบ่อย</div>
+        <div id="moodBars">
+          <div class="mbar-item"><div class="mbar-top"><span>😤 เครียด</span><strong>3 ครั้ง</strong></div><div class="mbar-track"><div class="mbar-fill" style="width:60%"></div></div></div>
+          <div class="mbar-item"><div class="mbar-top"><span>😔 เหนื่อย</span><strong>2 ครั้ง</strong></div><div class="mbar-track"><div class="mbar-fill" style="width:40%"></div></div></div>
+          <div class="mbar-item"><div class="mbar-top"><span>😰 กังวล</span><strong>2 ครั้ง</strong></div><div class="mbar-track"><div class="mbar-fill" style="width:40%"></div></div></div>
+          <div class="mbar-item"><div class="mbar-top"><span>🥰 ดีใจ</span><strong>1 ครั้ง</strong></div><div class="mbar-track"><div class="mbar-fill" style="width:20%"></div></div></div>
+        </div>
+
+        <div class="section-hd">📅 Check-in 30 วัน</div>
+        <div class="hm-wrap" id="hm"></div>
+        <div class="sp-sm"></div>
+
+        <div class="section-hd">🔍 Pattern Insight</div>
+        <div class="pi-card">
+          <div class="pi-tag">💡 AI วิเคราะห์รูปแบบ</div>
+          <div class="pi-text" id="piText">คุณมักเครียดช่วงต้นสัปดาห์ (จันทร์–อังคาร) และอารมณ์ดีขึ้นหลังจาก check-in และทำ safe action ลองตั้ง reminder เช้าวันจันทร์ก่อนเริ่มงาน 🌱</div>
+        </div>
+        <div class="sp"></div>
+      </div>
+    </div>
+
+    <!-- ═══ DECISION PAUSE ═══ -->
+    <div class="page" id="pg-pause">
+      <div class="page-inner">
+        <div class="ph">
+          <div class="ph-title">Decision Pause ⏸️</div>
+          <div class="ph-sub">หยุดคิดก่อนตัดสินใจ · ปลอดภัยกว่า</div>
+        </div>
+        <div class="sp"></div>
+
+        <div class="dp-card">
+          <div class="dp-icon">⚠️</div>
+          <div class="dp-title">ดูเหมือนว่าคุณกำลังจะตัดสินใจเรื่องสำคัญ</div>
+          <div class="dp-sub">Pak Pink Jai ขอชวนคุณ "หยุดคิดก่อน 1 นาที" ตอบคำถามเหล่านี้ก่อนนะ 💛</div>
+
+          <div class="dp-q"><div class="dp-q-num">คำถาม 1</div><div class="dp-q-text">ตอนนี้ตัดสินใจจากอารมณ์หรือเหตุผลมากกว่ากัน?</div></div>
+          <div class="dp-q"><div class="dp-q-num">คำถาม 2</div><div class="dp-q-text">ความเสี่ยงของการตัดสินใจทันทีคืออะไร?</div></div>
+          <div class="dp-q"><div class="dp-q-num">คำถาม 3</div><div class="dp-q-text">ควรรอ 24 ชั่วโมงไหม?</div></div>
+          <div class="dp-q"><div class="dp-q-num">คำถาม 4</div><div class="dp-q-text">ทางเลือกที่ปลอดภัยกว่าคืออะไร?</div></div>
+          <div class="dp-q"><div class="dp-q-num">คำถาม 5</div><div class="dp-q-text">คำถามที่ควรถามตัวเองก่อนตัดสินใจคืออะไร?</div></div>
+        </div>
+
+        <div class="section-hd" style="margin-top:18px">บอก AI ว่าอยากทำอะไร</div>
+        <div style="margin:0 22px;position:relative">
+          <textarea id="dpInput" rows="3" placeholder="เช่น: อยากลาออกทันที / อยากส่ง message หาแฟนเก่า / อยากซื้อของราคาแพง..."></textarea>
+        </div>
+        <button class="sub-btn" style="margin-top:12px" onclick="doPause()">🛑 ให้ AI ช่วยวิเคราะห์</button>
+
+        <div class="gr-alert" id="grAlert">
+          <div class="gr-alert-title">🚨 ใจเย็นก่อนนะ</div>
+          <div class="gr-alert-text">AI ตรวจพบว่าคุณอาจรู้สึกหนักมากตอนนี้ หากคุณกำลังประสบกับความคิดทำร้ายตัวเอง กรุณาติดต่อผู้เชี่ยวชาญได้เลย</div>
+          <div class="gr-phone" onclick="alert('กำลังโทร 1323...')">
+            <div>
+              <div class="gr-phone-num">📞 1323</div>
+              <div class="gr-phone-lbl">สายด่วนสุขภาพจิต · ตลอด 24 ชม.</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="pauseResult" style="display:none;margin-top:16px">
+          <div class="safer-card">
+            <div class="safer-hd"><div class="safer-hd-txt">🛡️ ทางเลือกที่ปลอดภัยกว่า</div></div>
+            <div class="safer-body" id="saferBody"></div>
+          </div>
+        </div>
+        <div class="sp"></div>
+      </div>
+    </div>
+
+    <!-- BOTTOM NAV -->
+    <div class="bnav">
+      <button class="nb act" id="nb-home" onclick="go('home')"><span class="nb-icon">🏠</span><span class="nb-label">หน้าแรก</span><div class="nb-dot"></div></button>
+      <button class="nb" id="nb-journal" onclick="go('journal')"><span class="nb-icon">✍️</span><span class="nb-label">บันทึก</span><div class="nb-dot"></div></button>
+      <button class="nb" id="nb-chat" onclick="go('chat')"><span class="nb-icon">💬</span><span class="nb-label">AI โค้ช</span><div class="nb-dot"></div></button>
+      <button class="nb" id="nb-pause" onclick="go('pause')"><span class="nb-icon">⏸️</span><span class="nb-label">Decision</span><div class="nb-dot"></div></button>
+      <button class="nb" id="nb-report" onclick="go('report')"><span class="nb-icon">📊</span><span class="nb-label">รายงาน</span><div class="nb-dot"></div></button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── CLOCK ──
+function updClock(){const n=new Date();document.getElementById('clk').textContent=n.getHours()+':'+(n.getMinutes()<10?'0':'')+n.getMinutes()}
+updClock();setInterval(updClock,10000);
+
+// ── DATE ──
+const DAYS=['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'];
+const MONTHS=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+const NOW=new Date();
+const hd=document.getElementById('hdate');
+if(hd)hd.textContent=DAYS[NOW.getDay()]+' · '+NOW.getDate()+' '+MONTHS[NOW.getMonth()]+' '+(NOW.getFullYear()+543);
+
+// ── HEATMAP ──
+const hmEl=document.getElementById('hm');
+[0,0,1,1,2,3,1,0,2,3,1,2,1,3,2,0,1,3,2,1,3,2,0,1,2,3,1,2,3,1].forEach(l=>{
+  const d=document.createElement('div');d.className='hmc'+(l?' l'+Math.min(l,3):'');hmEl.appendChild(d);
+});
+
+// ── NAV ──
+function go(tab){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('act'));
+  document.getElementById('pg-'+tab).classList.add('active');
+  const nb=document.getElementById('nb-'+tab);if(nb)nb.classList.add('act');
+  document.getElementById('pg-'+tab).scrollTop=0;
+}
+
+// ── DATA STORE ──
+const DB={entries:[],streak:5,score:75};
+
+// ── JOURNAL ──
+let curMood=null,curMoodBg='';
+function selM(el,mood,emoji,bg){
+  document.querySelectorAll('.mc').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');curMood=mood;curMoodBg=bg;
+}
+function togTag(el){el.classList.toggle('sel')}
+
+function submitJ(){
+  const txt=document.getElementById('jtxt').value.trim();
+  if(!curMood){toast('เลือกอารมณ์ก่อนนะ 😊');return}
+  if(txt.length<8){toast('เขียนเพิ่มอีกนิดนึงนะ 💙');return}
+  const tags=[...document.querySelectorAll('.tag.sel')].map(t=>t.textContent.trim());
+  const entry={id:Date.now(),ts:new Date().toISOString(),mood:curMood,intensity:+document.getElementById('intSlider').value,tags,text:txt};
+  DB.entries.unshift(entry);DB.streak++;DB.score=Math.min(100,DB.score+2);
+  document.getElementById('streakN').textContent=DB.streak;
+  document.getElementById('scoreNum').textContent=DB.score;
+  document.getElementById('rStreak').textContent=DB.streak;
+  document.getElementById('rScore').textContent=DB.score;
+  document.getElementById('rEntries').textContent=DB.entries.length;
+  addJHome(entry);updateMoodBars();
+
+  // reset
+  document.querySelectorAll('.mc').forEach(c=>c.classList.remove('sel'));
+  document.querySelectorAll('.tag').forEach(t=>t.classList.remove('sel'));
+  document.getElementById('jtxt').value='';document.getElementById('cc').textContent='0';
+  document.getElementById('intSlider').value=5;document.getElementById('intV').textContent='5';
+  curMood=null;curMoodBg='';
+
+  const ctx='ฉันเพิ่งบันทึกความรู้สึก: รู้สึก'+entry.mood+' ระดับ '+entry.intensity+'/10 เกี่ยวกับ '+(tags.join(', ')||'ทั่วไป')+' - "'+entry.text+'" ช่วยให้ reflection และแนะนำ safe action ให้หน่อยนะ';
+  toast('✅ บันทึกแล้ว! กำลังส่ง AI reflection...');
+  setTimeout(()=>{go('chat');setTimeout(()=>callAI(ctx,true),600)},1500);
+}
+
+const moodEmoji={'เครียด':'😤','กังวล':'😰','โกรธ':'😠','เหนื่อย':'😔','สับสน':'😵','หมดไฟ':'🪫','โอเค':'😌','ดีใจ':'🥰'};
+const moodBg={'เครียด':'rgba(245,158,11,.12)','กังวล':'rgba(37,99,235,.10)','โกรธ':'rgba(220,38,38,.10)','เหนื่อย':'rgba(124,58,237,.10)','สับสน':'rgba(217,70,239,.10)','หมดไฟ':'rgba(148,163,184,.12)','โอเค':'rgba(30,202,138,.10)','ดีใจ':'rgba(234,179,8,.12)'};
+
+function addJHome(e){
+  const list=document.getElementById('jlist');
+  const d=document.createElement('div');d.className='jitem';
+  const bg=moodBg[e.mood]||'rgba(30,202,138,.10)';
+  const em=moodEmoji[e.mood]||'😊';
+  const tStr=e.tags.map(t=>t.replace(/[^\u0e00-\u0e7fa-zA-Z0-9 ]/g,'')).join(' · ');
+  d.innerHTML=`<div class="ji-dot" style="background:${bg}">${em}</div><div class="ji-info"><div class="ji-top"><div class="ji-title">${e.mood}${tStr?' · '+tStr:''}</div><div class="ji-time">เมื่อกี้</div></div><div class="ji-prev">${e.text}</div></div>`;
+  list.insertBefore(d,list.firstChild);
+}
+
+function updateMoodBars(){
+  const counts={};
+  DB.entries.forEach(e=>{counts[e.mood]=(counts[e.mood]||0)+1});
+  const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  const total=DB.entries.length||1;
+  const bars=document.getElementById('moodBars');
+  bars.innerHTML=sorted.map(([m,c])=>`<div class="mbar-item"><div class="mbar-top"><span>${moodEmoji[m]||'😊'} ${m}</span><strong>${c} ครั้ง</strong></div><div class="mbar-track"><div class="mbar-fill" style="width:${Math.round(c/total*100)}%"></div></div></div>`).join('')||bars.innerHTML;
+}
+
+// ── TOAST ──
+function toast(msg){
+  document.querySelectorAll('.toast').forEach(t=>t.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=msg;
+  document.querySelector('.phone').appendChild(t);
+  setTimeout(()=>t.remove(),3300);
+}
+
+// ── AUTO RESIZE TEXTAREA ──
+function autoR(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,90)+'px'}
+
+// ── CHAT ──
+const HISTORY=[];
+const SYSTEM='คุณเป็น AI โค้ชสุขภาพจิตชื่อ "ปุ้ม" ของแอป Pak Pink Jai สำหรับคนทำงานไทยอายุ 20-40 ปี พูดภาษาไทยเป็นกันเอง อบอุ่น ไม่ judgemental สไตล์มูเตลู ตอบสั้น 2-4 ประโยค ไม่ฟันธง ให้กำลังใจแต่ practical มี safe action เล็กๆ เสมอ ถ้ามีคำเสี่ยงอันตราย mention สาย 1323 ทันที';
+
+function qsend(txt){document.getElementById('ci').value=txt;document.getElementById('csend').disabled=false;doSend()}
+
+async function doSend(){
+  const ci=document.getElementById('ci');
+  const txt=ci.value.trim();if(!txt)return;
+  ci.value='';ci.style.height='auto';document.getElementById('csend').disabled=true;
+  appendMsg(txt,true);
+  await callAI(txt,false);
+}
+
+async function callAI(userText,fromJournal){
+  if(fromJournal)appendMsg(userText.split(' - "')[0].replace('ฉันเพิ่งบันทึกความรู้สึก: ','📝 '),true);
+  HISTORY.push({role:'user',content:userText});
+  const wrap=document.getElementById('msgs');
+  const te=document.createElement('div');te.className='msg';te.id='typing';
+  te.innerHTML='<div class="msg-av">🌿</div><div class="typing-b"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  wrap.appendChild(te);scrollChat();
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:SYSTEM,
+        messages:HISTORY.map(m=>({role:m.role,content:m.content}))})
+    });
+    const data=await res.json();
+    te.remove();
+    const reply=data.content?.[0]?.text||'ขอโทษนะ ลองพิมพ์ใหม่ได้เลย 💙';
+    HISTORY.push({role:'assistant',content:reply});
+    appendMsg(reply,false);
+    updateInsight(reply);
+  }catch(e){
+    te.remove();
+    const fb={
+      'เครียด':'ฟังอยู่นะ 💚 เครียดแบบนี้มันหนักมากเลย ลองเล่าให้ฟังหน่อยได้ไหมว่าเครียดเรื่องอะไรเป็นพิเศษ?',
+      'หมดไฟ':'หมดไฟไม่ใช่ความผิดพลาดเลย 🕯️ วันนี้โฟกัสแค่ 1 งานที่สำคัญที่สุดพอนะ',
+      'ลาออก':'ก่อนตัดสินใจใหญ่ ลองรอ 24 ชั่วโมงก่อนได้ไหม? เดี๋ยวค่อยคิดด้วยกัน 🌿',
+      'กังวล':'กังวลแล้วมันหนักมากจริงๆ 💙 ลองเขียนออกมาว่ากังวลเรื่องอะไรบ้าง แล้วแยกว่าอันไหนควบคุมได้จริง',
+      'กำลังใจ':'อยู่นี่นะ 💚 แค่คุณยังพยายามต่อไปก็เก่งมากแล้ว',
+      'ความรัก':'เรื่องความรักมันซับซ้อนและเจ็บปวดมากเลยนะ ❤️‍🩹 เล่าให้ฟังก่อนได้เลย'
+    };
+    let r='ฟังอยู่นะ 🌿 เล่าต่อได้เลย หรืออยากให้ช่วยเรื่องไหนเป็นพิเศษ?';
+    Object.keys(fb).forEach(k=>{if(userText.includes(k))r=fb[k]});
+    HISTORY.push({role:'assistant',content:r});
+    appendMsg(r,false);
+  }
+}
+
+function appendMsg(txt,isUser){
+  const wrap=document.getElementById('msgs');
+  const d=document.createElement('div');d.className='msg'+(isUser?' user':'');
+  d.innerHTML=isUser
+    ?`<div class="msg-av" style="background:rgba(30,202,138,.15);font-size:14px">😊</div><div class="bubble">${txt}</div>`
+    :`<div class="msg-av">🌿</div><div class="bubble">${txt}</div>`;
+  wrap.appendChild(d);scrollChat();
+}
+
+function scrollChat(){const p=document.getElementById('pg-chat');setTimeout(()=>p.scrollTop=p.scrollHeight,60)}
+
+function updateInsight(reply){
+  const el=document.getElementById('homeInsight');
+  const short=reply.length>80?reply.substring(0,80)+'...' : reply;
+  if(short.length>20)el.textContent=short;
+}
+
+// ── DECISION PAUSE ──
+const DANGER=['ทำร้าย','ตาย','หาย','ไม่อยาก','จบชีวิต','สิ้นสุด','เจ็บ','เลือด'];
+const SAFER_MAP={
+  'ลาออก':['รอ 24 ชม. ก่อนตัดสินใจสุดท้าย','ลองคุยกับหัวหน้าก่อน 1 ครั้ง','หางานสำรองไว้ก่อน','ขอลาพักร้อนเพื่อรีเซ็ต'],
+  'ส่ง':['บันทึกใน draft ก่อน ส่งพรุ่งนี้','อ่านดูอีกรอบหลังหายโกรธ','โทรคุยแทนการส่ง text'],
+  'ซื้อ':['รอ 48 ชม. แล้วค่อยตัดสินใจ','ลิสต์เหตุผลที่ต้องการจริงๆ','ดูงบประมาณก่อน'],
+  'ทัก':['รอ 24 ชม. ก่อนทัก','ถามตัวเองว่าเป้าหมายคืออะไร','คุยกับเพื่อนก่อน'],
+};
+
+async function doPause(){
+  const inp=document.getElementById('dpInput').value.trim();
+  if(!inp){toast('บอกสิ่งที่อยากทำก่อนนะ 💬');return}
+  if(DANGER.some(w=>inp.includes(w))){document.getElementById('grAlert').classList.add('show');return}
+  document.getElementById('grAlert').classList.remove('show');
+
+  let alts=['รอ 24 ชม. ก่อนตัดสินใจ','เขียน pros/cons 3 ข้อ','คุยกับคนที่ไว้ใจ','นอนหลับพักก่อน'];
+  Object.keys(SAFER_MAP).forEach(k=>{if(inp.includes(k))alts=SAFER_MAP[k]});
+
+  document.getElementById('saferBody').innerHTML=alts.map(a=>`<div class="safer-item"><span class="safer-check">✓</span>${a}</div>`).join('');
+  document.getElementById('pauseResult').style.display='block';
+
+  toast('⏸ วิเคราะห์แล้ว! ดูทางเลือกที่ปลอดภัยกว่าด้านล่าง');
+
+  // Ask AI
+  const q='ผู้ใช้บอกว่าอยากจะ: "'+inp+'" ช่วยวิเคราะห์ว่าควรทำอย่างไร ให้คำแนะนำ safe action สั้นๆ 3 ข้อ ภาษาไทย เป็นกันเอง';
+  setTimeout(()=>{go('chat');setTimeout(()=>callAI(q,true),700)},2000);
+}
+</script>
+</body>
+</html>
